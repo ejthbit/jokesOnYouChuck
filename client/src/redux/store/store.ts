@@ -1,8 +1,11 @@
 import { configureStore, getDefaultMiddleware, ThunkDispatch } from '@reduxjs/toolkit'
 import { AnyAction, combineReducers } from 'redux'
 import { useDispatch } from 'react-redux'
+import chuckReducer from '../slices/chuckSlice'
 
-export const rootReducer = combineReducers({})
+const rootReducer = combineReducers({
+    chuck: chuckReducer,
+})
 export type RootState = ReturnType<typeof rootReducer>
 export const store = configureStore({
     reducer: rootReducer,
