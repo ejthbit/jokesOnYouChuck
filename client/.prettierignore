@@ -1,0 +1,16 @@
+.vscode-test/
+.vscode/
+out/
+public/
+dist/
+test-fixtures/
+node_modules/
+src/setupTests.ts
+src/react-app-env.d.ts
+src/serviceWorker.ts
+.editorconfig
+.eslintrc.json
+tsconfig.json
+package.json
+yarn.lock
+README.md
