@@ -1,17 +1,25 @@
 /* eslint-disable camelcase */
 import { createSlice } from '@reduxjs/toolkit'
-import { fetchJokeCategories, fetchRandomJoke } from '../actions/jokesActions'
+import { fetchJokeCategories, fetchJokesByQuery, fetchRandomJoke } from '../actions/jokesActions'
 import * as storeTypes from '../store/storeTypes/storeTypes'
+import * as globalTypes from '../../common/globalTypes/globalTypes'
+import _ from 'lodash'
+import * as chuckSliceHelpers from '../helpers/chuckSliceHelpers'
 
 /* RTK uses on background Immer library.
 This means you can write code that "mutates" the state inside the reducer,
 and Immer will safely return a correct immutably updated result. */
 
 const chuckInitialState: storeTypes.chuckState = {
-    joke: { data: undefined, isLoading: undefined, error: undefined },
+    joke: {
+        data: chuckSliceHelpers.getJokeInitState(),
+        queryJokes: chuckSliceHelpers.getJokeQueryInitState(),
+        isLoading: false,
+        error: undefined,
+    },
     categories: {
         data: [],
-        isLoading: undefined,
+        isLoading: false,
         error: undefined,
     },
 }
@@ -20,7 +28,10 @@ const chuckSlice = createSlice({
     initialState: chuckInitialState,
     reducers: {
         clearJoke: (state) => {
-            state.joke.data = undefined // Action for clearing joke state.
+            state.joke.data = chuckSliceHelpers.getJokeInitState() // Action for clearing joke state.
+        },
+        setRandomJoke: (state, action) => {
+            state.joke.data = action.payload as globalTypes.Joke
         },
     },
     extraReducers: (builder) => {
@@ -48,8 +59,24 @@ const chuckSlice = createSlice({
             state.categories.isLoading = false
             state.categories.error = action.error
         })
+        builder.addCase(fetchJokesByQuery.pending, (state) => {
+            state.joke.isLoading = true
+            state.joke.error = undefined // Reset errors from previous call.
+        })
+        builder.addCase(fetchJokesByQuery.fulfilled, (state, action) => {
+            state.joke.isLoading = false
+            state.joke.queryJokes = action.payload
+            state.joke.data =
+                action.payload.total > 0
+                    ? (_.sample(action.payload.result) as globalTypes.Joke)
+                    : chuckSliceHelpers.jokeByQueryNotFound()
+        })
+        builder.addCase(fetchJokesByQuery.rejected, (state, action) => {
+            state.joke.isLoading = false
+            state.joke.error = action.error
+        })
     },
 })
 
-export const { clearJoke } = chuckSlice.actions
+export const { clearJoke, setRandomJoke } = chuckSlice.actions
 export default chuckSlice.reducer

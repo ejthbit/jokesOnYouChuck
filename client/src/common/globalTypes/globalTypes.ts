@@ -10,3 +10,8 @@ export type Joke = {
     url: string
     value: string
 }
+
+export type JokeQueryRes = {
+    total: number
+    result: Joke[]
+}

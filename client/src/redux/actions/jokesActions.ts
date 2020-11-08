@@ -21,3 +21,7 @@ export const fetchJokeCategories = createAsyncThunk<string[]>('chuck/fetchJokeCa
     const res = await axiosInstanceChuckNorris.get(`categories`)
     return res.data
 })
+export const fetchJokesByQuery = createAsyncThunk('chuck/fetchJokesByQuery', async (query: string) => {
+    const res = await axiosInstanceChuckNorris.get(`search?query=${query}`)
+    return res.data as globalTypes.JokeQueryRes
+})
