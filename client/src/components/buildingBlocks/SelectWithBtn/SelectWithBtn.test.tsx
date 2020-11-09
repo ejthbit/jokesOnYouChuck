@@ -1,5 +1,5 @@
 import userEvent from '@testing-library/user-event'
-import { render as rtlRender, within } from '@testing-library/react'
+import { render as rtlRender, within, screen } from '@testing-library/react'
 import React from 'react'
 import { unmountComponentAtNode } from 'react-dom'
 import { errorMock, getSelectOptions, render } from '../../../common/utils/testUtils'
@@ -25,7 +25,7 @@ describe('<SelectWithBtn />', () => {
         unmountComponentAtNode(div)
     })
     it('On btn click', () => {
-        const { getByText } = rtlRender(
+        rtlRender(
             <SelectWithBtn
                 btnText="testBtn"
                 onBtnClick={onClick}
@@ -34,11 +34,11 @@ describe('<SelectWithBtn />', () => {
                 selectedItem={'test'}
             />
         )
-        userEvent.click(getByText('testBtn'))
+        userEvent.click(screen.getByText('testBtn'))
         expect(onClick).toHaveBeenCalledTimes(1)
     })
     it('Shows select options when SelectMenu is open with placeholder item', async () => {
-        const { getByLabelText } = rtlRender(
+        rtlRender(
             <SelectWithBtn
                 selectLbl="Test categories"
                 btnText="testBtn"
@@ -48,12 +48,12 @@ describe('<SelectWithBtn />', () => {
                 selectedItem={'selectedTestItem'}
             />
         )
-        selectEvent.openMenu(getByLabelText('Test categories:'))
+        selectEvent.openMenu(screen.getByLabelText('Test categories:'))
         const selectOptions = getSelectOptions()
         expect(selectOptions).toEqual(['Please select test categories', 'testItem', 'selectedTestItem'])
     })
     it('Select onChange should not be called if selected element has the current value (value did not change)', async () => {
-        const { getByLabelText, getByRole } = rtlRender(
+        rtlRender(
             <SelectWithBtn
                 selectLbl="Test categories"
                 btnText="testBtn"
@@ -63,13 +63,13 @@ describe('<SelectWithBtn />', () => {
                 selectedItem={'selectedTestItem'}
             />
         )
-        selectEvent.openMenu(getByLabelText('Test categories:'))
-        const listbox = within(getByRole('listbox'))
+        selectEvent.openMenu(screen.getByLabelText('Test categories:'))
+        const listbox = within(screen.getByRole('listbox'))
         userEvent.click(listbox.getByText('selectedTestItem'))
         expect(onSelectChange).toHaveBeenCalledTimes(0)
     })
     it('Select onChange called and selected value is changed', async () => {
-        const { getByLabelText, getByRole, findByText } = rtlRender(
+        rtlRender(
             <SelectWithBtn
                 selectLbl="Test categories"
                 btnText="testBtn"
@@ -79,14 +79,14 @@ describe('<SelectWithBtn />', () => {
                 selectedItem={'selectedTestItem'}
             />
         )
-        selectEvent.openMenu(getByLabelText('Test categories:'))
-        const listbox = within(getByRole('listbox'))
+        selectEvent.openMenu(screen.getByLabelText('Test categories:'))
+        const listbox = within(screen.getByRole('listbox'))
         userEvent.click(listbox.getByText('testItem'))
         expect(onSelectChange).toHaveBeenCalledTimes(1)
-        expect(await findByText('testItem')).toBeInTheDocument()
+        expect(await screen.getByText('testItem')).toBeInTheDocument()
     })
     it('When Select options data loading indicator is shown', async () => {
-        const { getByLabelText, findByTestId } = rtlRender(
+        rtlRender(
             <SelectWithBtn
                 selectLbl="Test categories"
                 btnText="testBtn"
@@ -97,11 +97,11 @@ describe('<SelectWithBtn />', () => {
                 selectedItem={''}
             />
         )
-        selectEvent.openMenu(getByLabelText('Test categories:'))
-        expect(await findByTestId('loadingIndicator')).toBeInTheDocument()
+        selectEvent.openMenu(screen.getByLabelText('Test categories:'))
+        expect(await screen.findByTestId('loadingIndicator')).toBeInTheDocument()
     })
     it('When Select options data failed to load error.message is shown', async () => {
-        const { getByTestId } = rtlRender(
+        rtlRender(
             <SelectWithBtn
                 selectLbl="Test categories"
                 btnText="testBtn"
@@ -113,6 +113,6 @@ describe('<SelectWithBtn />', () => {
                 selectedItem={''}
             />
         )
-        expect(await getByTestId('select-options-errorMsg')).toBeInTheDocument()
+        expect(await screen.getByTestId('select-options-errorMsg')).toBeInTheDocument()
     })
 })

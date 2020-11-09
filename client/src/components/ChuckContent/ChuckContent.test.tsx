@@ -1,4 +1,4 @@
-import { render as rtlRender } from '@testing-library/react'
+import { render as rtlRender, screen } from '@testing-library/react'
 import React from 'react'
 import { unmountComponentAtNode } from 'react-dom'
 import { Provider } from 'react-redux'
@@ -16,8 +16,8 @@ describe('<ChuckContent />', () => {
         unmountComponentAtNode(div)
     })
     it('Contains <SpinningChuck /> component', () => {
-        const { getByTestId } = render(<ChuckContent />)
-        expect(getByTestId('SpinningChuck')).toBeInTheDocument()
+        render(<ChuckContent />)
+        expect(screen.getByTestId('SpinningChuck')).toBeInTheDocument()
     })
     it('Shows Loading indicator when joke is loading', async () => {
         const storeState = {
@@ -29,14 +29,14 @@ describe('<ChuckContent />', () => {
                     error: undefined,
                 },
             },
-        }
+        } // ! Can be made as function to prevent redundant code.
         const store = mockStore(storeState)
-        const { findByTestId } = rtlRender(
+        rtlRender(
             <Provider store={store}>
                 <ChuckContent />
             </Provider>
         )
-        expect(await findByTestId('loadingIndicator')).toBeInTheDocument()
+        expect(await screen.findByTestId('loadingIndicator')).toBeInTheDocument()
     })
     it('When joke fails to load, error message is shown', async () => {
         const storeState = {
@@ -50,12 +50,12 @@ describe('<ChuckContent />', () => {
             },
         }
         const store = mockStore(storeState)
-        const { findByText } = rtlRender(
+        rtlRender(
             <Provider store={store}>
                 <ChuckContent />
             </Provider>
         )
-        expect(await findByText('Chuck is tired today, please try it later.')).toBeInTheDocument()
+        expect(await screen.findByText('Chuck is tired today, please try it later.')).toBeInTheDocument()
     })
     it('User is noticed with message when joke for query does not exists', async () => {
         const storeState = {
@@ -69,12 +69,12 @@ describe('<ChuckContent />', () => {
             },
         }
         const store = mockStore(storeState)
-        const { findByText } = rtlRender(
+        rtlRender(
             <Provider store={store}>
                 <ChuckContent />
             </Provider>
         )
-        expect(await findByText('Sorry, joke for this query was not found :(')).toBeInTheDocument()
+        expect(await screen.findByText('Sorry, joke for this query was not found :(')).toBeInTheDocument()
     })
     it('Joke is shown on render', async () => {
         const storeState = {
@@ -88,11 +88,11 @@ describe('<ChuckContent />', () => {
             },
         }
         const store = mockStore(storeState)
-        const { findByText } = rtlRender(
+        rtlRender(
             <Provider store={store}>
                 <ChuckContent />
             </Provider>
         )
-        expect(await findByText('Chuck is testing his jokes')).toBeInTheDocument()
+        expect(await screen.findByText('Chuck is testing his jokes')).toBeInTheDocument()
     })
 })

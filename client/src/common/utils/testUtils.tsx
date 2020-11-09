@@ -18,7 +18,7 @@ export const getSelectOptions = (): (string | null)[] => {
 
     if (listbox) {
         const optionNodes = within(listbox).getAllByRole('option')
-        return optionNodes.map((thing) => thing.textContent)
+        return optionNodes.map((optionNode) => optionNode.textContent)
     }
     return []
 }
