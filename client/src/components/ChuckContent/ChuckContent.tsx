@@ -17,7 +17,7 @@ const ChuckContent = (): JSX.Element => {
                         {!jokeError ? jokeApiData.value : 'Chuck is tired today, please try it later.'}
                     </Typography>
                 ) : (
-                    <CircularProgress size={20} />
+                    <CircularProgress data-testid="loadingIndicator" size={20} />
                 )}
             </Box>
         </Box>

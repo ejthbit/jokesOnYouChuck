@@ -39,6 +39,8 @@ const ChuckView = (): JSX.Element => {
             <Navbar className={classes.navbar} logo={<ChuckLogo className={classes.logo} />}>
                 <Box className={classes.navbarItems}>
                     <TextField
+                        aria-labelledby="Query search..."
+                        data-testid="query-search-input"
                         className={classes.querySearch}
                         label="Query search..."
                         variant="outlined"
@@ -46,14 +48,13 @@ const ChuckView = (): JSX.Element => {
                         onChange={handleChange}
                     />
                     <SelectWithBtn
+                        data-testid="category-select-with-submitBtn"
                         selectLbl="Joke category"
                         selectData={jokeCategoriesApiData}
                         selectedItem={selectedCategory}
                         isSelectDataLoading={jokeCategoriesIsLoading}
                         selectDataError={jokeCategoriesError}
-                        onSelectChange={(e) => {
-                            setSelectedCategory(e.target.value as string)
-                        }}
+                        onSelectChange={(e) => setSelectedCategory(e.target.value as string)}
                         btnText="Chuck make a joke"
                         onBtnClick={() => dispatch(fetchRandomJoke(selectedCategory))}
                     />

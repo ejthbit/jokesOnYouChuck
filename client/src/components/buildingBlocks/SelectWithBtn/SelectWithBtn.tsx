@@ -29,20 +29,23 @@ const SelectWithBtn = ({
     onSelectChange,
     btnText,
     onBtnClick,
+    ...props
 }: SelectWithBtnProps): JSX.Element => {
     const classes = useStyles()
-    const getItemsWithDefault = (): SelectItem[] => {
+    const getItemsWithPlaceholderItm = (): SelectItem[] => {
         const arr = [{ value: '', text: `Please select ${selectLbl ? selectLbl.toLowerCase() : 'item'}`, disabled: true }]
         selectData.map((item) => arr.push({ value: item, text: item, disabled: false }))
         return arr
     }
 
     return (
-        <Box className={classes.root}>
+        <Box {...props} className={classes.root}>
             <InputLabel className={classes.selectLabel} id="select-label">
                 {`${selectLbl}:`}
             </InputLabel>
             <Select
+                name="select"
+                data-testid="select"
                 labelId="select-label"
                 id="Select"
                 className={classes.select}
@@ -53,17 +56,17 @@ const SelectWithBtn = ({
             >
                 {isSelectDataLoading ? (
                     <Box display="flex" justifyContent="center">
-                        <CircularProgress />
+                        <CircularProgress data-testid="loadingIndicator" />
                     </Box>
                 ) : !selectDataError ? (
-                    getItemsWithDefault().map((item) => (
-                        <MenuItem key={nanoid()} value={item.value} disabled={item.disabled}>
+                    getItemsWithPlaceholderItm().map((item) => (
+                        <MenuItem data-testid="select-option" key={nanoid()} value={item.value} disabled={item.disabled}>
                             {item.text}
                         </MenuItem>
                     ))
                 ) : (
-                    <MenuItem value="" disabled>
-                        <Typography color="error" variant="caption">
+                    <MenuItem data-testid="select-option" value="" disabled>
+                        <Typography color="error" variant="caption" data-testid="select-options-errorMsg">
                             {selectDataError.message}
                         </Typography>
                     </MenuItem>
