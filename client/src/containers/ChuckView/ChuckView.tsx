@@ -1,4 +1,4 @@
-import { Box, TextField } from '@material-ui/core'
+import { Box, TextField, Tooltip } from '@material-ui/core'
 import _ from 'lodash'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -31,22 +31,24 @@ const ChuckView = (): JSX.Element => {
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
         const { value: nextValue } = e.target
         setInputValue(nextValue)
-        debounceChange(nextValue)
+        if (nextValue.length > 3 && nextValue.length < 120) debounceChange(nextValue)
     }
 
     return (
         <>
             <Navbar className={classes.navbar} logo={<ChuckLogo className={classes.logo} />}>
                 <Box className={classes.navbarItems}>
-                    <TextField
-                        aria-labelledby="Query search..."
-                        data-testid="query-search-input"
-                        className={classes.querySearch}
-                        label="Query search..."
-                        variant="outlined"
-                        value={inputValue}
-                        onChange={handleChange}
-                    />
+                    <Tooltip title="Tip: Query must be between 3 and 120 characters">
+                        <TextField
+                            aria-labelledby="Query search..."
+                            data-testid="query-search-input"
+                            className={classes.querySearch}
+                            label="Query search..."
+                            variant="outlined"
+                            value={inputValue}
+                            onChange={handleChange}
+                        />
+                    </Tooltip>
                     <SelectWithBtn
                         data-testid="category-select-with-submitBtn"
                         selectLbl="Joke category"

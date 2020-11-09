@@ -3,6 +3,7 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core'
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
+            paddingTop: theme.spacing(9),
             backgroundColor: '#282c34',
             minHeight: '100vh',
             display: 'flex',
