@@ -25,13 +25,14 @@ const ChuckView = (): JSX.Element => {
     }, [dispatch])
 
     const debounceChange = useCallback(
-        _.debounce((nextValue) => dispatch(nextValue !== '' ? fetchJokesByQuery(nextValue) : fetchRandomJoke()), 500),
+        _.debounce((nextValue) => dispatch(fetchJokesByQuery(nextValue)), 500),
         []
     )
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
         const { value: nextValue } = e.target
         setInputValue(nextValue)
-        if (nextValue.length > 3 && nextValue.length < 120) debounceChange(nextValue)
+        if (_.inRange(nextValue.length, 3, 120)) debounceChange(nextValue)
+        else if (_.isEmpty(nextValue)) dispatch(fetchRandomJoke())
     }
 
     return (
