@@ -32,12 +32,6 @@
         "prettier": "prettier --write '**/*.{tsx,ts,js,md,json}'",
         "eslint": "eslint . --ext '**/*.{tsx,ts,js}'"
     },
-    "eslintConfig": {
-        "extends": [
-            "react-app",
-            "react-app/jest"
-        ]
-    },
     "browserslist": {
         "production": [
             ">0.2%",
@@ -58,8 +52,10 @@
         "@typescript-eslint/parser": "^4.6.1",
         "eslint": "^7.12.1",
         "eslint-plugin-import": "^2.22.1",
+        "eslint-plugin-jest-dom": "^3.6.5",
         "eslint-plugin-jsx-a11y": "^6.4.1",
         "eslint-plugin-react": "^7.21.5",
+        "eslint-plugin-testing-library": "^3.10.1",
         "prettier": "^2.1.2",
         "react-select-event": "^5.1.0",
         "redux-mock-store": "^1.5.4"

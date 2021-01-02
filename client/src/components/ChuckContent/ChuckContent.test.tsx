@@ -17,7 +17,7 @@ describe('<ChuckContent />', () => {
     })
     it('Contains <SpinningChuck /> component', () => {
         render(<ChuckContent />)
-        expect(screen.getByTestId('SpinningChuck')).toBeInTheDocument()
+        expect(screen.getByAltText('SpinningChuck')).toBeInTheDocument()
     })
     it('Shows Loading indicator when joke is loading', async () => {
         const storeState = {
@@ -36,7 +36,7 @@ describe('<ChuckContent />', () => {
                 <ChuckContent />
             </Provider>
         )
-        expect(await screen.findByTestId('loadingIndicator')).toBeInTheDocument()
+        expect(await screen.findByRole('progressbar')).toBeInTheDocument()
     })
     it('When joke fails to load, error message is shown', async () => {
         const storeState = {

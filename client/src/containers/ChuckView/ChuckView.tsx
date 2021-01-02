@@ -25,7 +25,10 @@ const ChuckView = (): JSX.Element => {
     }, [dispatch])
 
     const debounceChange = useCallback(
-        _.debounce((nextValue) => dispatch(fetchJokesByQuery(nextValue)), 500),
+        _.debounce((nextValue) => {
+            dispatch(fetchJokesByQuery(nextValue))
+            setSelectedCategory('')
+        }, 1000),
         []
     )
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
@@ -41,8 +44,7 @@ const ChuckView = (): JSX.Element => {
                 <Box className={classes.navbarItems}>
                     <Tooltip title="Tip: Query must be between 3 and 120 characters">
                         <TextField
-                            aria-labelledby="Query search..."
-                            data-testid="query-search-input"
+                            aria-label="Query search..."
                             className={classes.querySearch}
                             label="Query search..."
                             variant="outlined"
@@ -51,13 +53,15 @@ const ChuckView = (): JSX.Element => {
                         />
                     </Tooltip>
                     <SelectWithBtn
-                        data-testid="category-select-with-submitBtn"
                         selectLbl="Joke category"
                         selectData={jokeCategoriesApiData}
                         selectedItem={selectedCategory}
                         isSelectDataLoading={jokeCategoriesIsLoading}
                         selectDataError={jokeCategoriesError}
-                        onSelectChange={(e) => setSelectedCategory(e.target.value as string)}
+                        onSelectChange={(e) => {
+                            setSelectedCategory(e.target.value as string)
+                            setInputValue('')
+                        }}
                         btnText="Chuck make a joke"
                         onBtnClick={() => dispatch(fetchRandomJoke(selectedCategory))}
                     />

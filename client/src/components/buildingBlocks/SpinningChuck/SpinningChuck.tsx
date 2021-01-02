@@ -8,6 +8,6 @@ type SpinningChuckProps = {
 }
 const SpinningChuck = ({ className }: SpinningChuckProps): JSX.Element => {
     const classes = useStyles()
-    return <img data-testid="SpinningChuck" className={clsx(classes.imgSpin, className)} src={chuckApproved} />
+    return <img alt="SpinningChuck" className={clsx(classes.imgSpin, className)} src={chuckApproved} />
 }
 export default SpinningChuck

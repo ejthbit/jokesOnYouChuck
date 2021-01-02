@@ -6,5 +6,5 @@ type ChuckLogoProps = {
 }
 
 export const ChuckLogo = ({ className }: ChuckLogoProps): JSX.Element => {
-    return <img data-testid="chuck-logo-img" className={className} src={chuckSignature} />
+    return <img alt="chuck-logo-img" className={className} src={chuckSignature} />
 }
