@@ -13,12 +13,12 @@ describe('<ChuckView />', () => {
         unmountComponentAtNode(div)
     })
     it('Contains <ChuckLogo /> component', () => {
-        expect(screen.getByTestId('chuck-logo-img')).toBeInTheDocument()
+        expect(screen.getByAltText('chuck-logo-img')).toBeInTheDocument()
     })
     it('Contains inputField with Query search... placeholder', () => {
-        expect(screen.getByTestId('query-search-input')).toHaveTextContent('Query search...')
+        expect(screen.getByLabelText('Query search...')).toBeInTheDocument()
     })
     it('Contains SelectWithBtn component', () => {
-        expect(screen.getByTestId('category-select-with-submitBtn')).toBeInTheDocument()
+        expect(screen.getByLabelText('Joke category')).toBeInTheDocument()
     })
 })

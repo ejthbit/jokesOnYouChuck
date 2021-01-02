@@ -1,5 +1,5 @@
 import userEvent from '@testing-library/user-event'
-import { render as rtlRender, within, screen } from '@testing-library/react'
+import { render as rtlRender, within, screen, cleanup } from '@testing-library/react'
 import React from 'react'
 import { unmountComponentAtNode } from 'react-dom'
 import { errorMock, getSelectOptions, render } from '../../../common/utils/testUtils'
@@ -34,7 +34,7 @@ describe('<SelectWithBtn />', () => {
                 selectedItem={'test'}
             />
         )
-        userEvent.click(screen.getByText('testBtn'))
+        userEvent.click(screen.getByRole('button', { name: 'testBtn' }))
         expect(onClick).toHaveBeenCalledTimes(1)
     })
     it('Shows select options when SelectMenu is open with placeholder item', async () => {
@@ -83,7 +83,7 @@ describe('<SelectWithBtn />', () => {
         const listbox = within(screen.getByRole('listbox'))
         userEvent.click(listbox.getByText('testItem'))
         expect(onSelectChange).toHaveBeenCalledTimes(1)
-        expect(await screen.getByText('testItem')).toBeInTheDocument()
+        expect(screen.getByText('testItem')).toBeInTheDocument()
     })
     it('When Select options data loading indicator is shown', async () => {
         rtlRender(
@@ -98,7 +98,7 @@ describe('<SelectWithBtn />', () => {
             />
         )
         selectEvent.openMenu(screen.getByLabelText('Test categories:'))
-        expect(await screen.findByTestId('loadingIndicator')).toBeInTheDocument()
+        expect(await screen.findByRole('progressbar')).toBeInTheDocument()
     })
     it('When Select options data failed to load error.message is shown', async () => {
         rtlRender(
@@ -113,6 +113,6 @@ describe('<SelectWithBtn />', () => {
                 selectedItem={''}
             />
         )
-        expect(await screen.getByTestId('select-options-errorMsg')).toBeInTheDocument()
+        expect(screen.getByText(errorMock.message)).toBeInTheDocument()
     })
 })

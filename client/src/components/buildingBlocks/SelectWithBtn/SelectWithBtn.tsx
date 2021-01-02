@@ -45,7 +45,7 @@ const SelectWithBtn = ({
             </InputLabel>
             <Select
                 name="select"
-                data-testid="select"
+                aria-label={`${selectLbl}`}
                 labelId="select-label"
                 id="Select"
                 className={classes.select}
@@ -56,17 +56,17 @@ const SelectWithBtn = ({
             >
                 {isSelectDataLoading ? (
                     <Box display="flex" justifyContent="center">
-                        <CircularProgress data-testid="loadingIndicator" />
+                        <CircularProgress />
                     </Box>
                 ) : !selectDataError ? (
                     getItemsWithPlaceholderItm().map((item) => (
-                        <MenuItem data-testid="select-option" key={nanoid()} value={item.value} disabled={item.disabled}>
+                        <MenuItem key={nanoid()} value={item.value} disabled={item.disabled}>
                             {item.text}
                         </MenuItem>
                     ))
                 ) : (
-                    <MenuItem data-testid="select-option" value="" disabled>
-                        <Typography color="error" variant="caption" data-testid="select-options-errorMsg">
+                    <MenuItem value="" disabled>
+                        <Typography color="error" variant="caption">
                             {selectDataError.message}
                         </Typography>
                     </MenuItem>
